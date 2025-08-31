@@ -1,0 +1,38 @@
+[remap]
+
+importer="texture"
+type="CompressedTexture2D"
+uid="uid://bkkviilg3eb1g"
+path.s3tc="res://.godot/imported/NASCAR_1.png-d497e2b1a9ef27c00c8a337f867f9d7d.s3tc.ctex"
+metadata={
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
+}
+generator_parameters={
+"md5": "ac2f0d03add092512323a673598b4389"
+}
+
+[deps]
+
+source_file="res://WEEEE/NASCAR_1.png"
+dest_files=["res://.godot/imported/NASCAR_1.png-d497e2b1a9ef27c00c8a337f867f9d7d.s3tc.ctex"]
+
+[params]
+
+compress/mode=2
+compress/high_quality=false
+compress/lossy_quality=0.7
+compress/hdr_compression=1
+compress/normal_map=0
+compress/channel_pack=0
+mipmaps/generate=true
+mipmaps/limit=-1
+roughness/mode=0
+roughness/src_normal=""
+process/fix_alpha_border=true
+process/premult_alpha=false
+process/normal_map_invert_y=false
+process/hdr_as_srgb=false
+process/hdr_clamp_exposure=false
+process/size_limit=0
+detect_3d/compress_to=0
