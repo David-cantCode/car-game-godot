@@ -1,0 +1,237 @@
+[gd_scene load_steps=5 format=4 uid="uid://bqlmps3hw1ngw"]
+
+[ext_resource type="PackedScene" uid="uid://w63j5fbexquw" path="res://scene.gltf" id="1_m2ke0"]
+
+[sub_resource type="GDScript" id="GDScript_a202f"]
+script/source = "extends VehicleBody3D
+
+var power := 300
+var brake_force := 5.0
+var steer_max_angles := 30
+var steer_speed := 60000
+
+
+var gear_ratios := [2.5, 1.7, 1.3, 1.1, 1.0]
+var max_rpm := 11000
+
+var current_gear := 0
+var rpm := 0.0
+var speed_multiplyer = 3.6
+var shift_cooldown := 0.25
+var shift_timer := 0.0
+
+var target_pitch = 1.0
+var current_pitch = 1.0
+
+var gear_shift_timer = 0.0
+var gear_shift_cooldown = 0.25
+var last_gear = 1
+
+@onready var rpm_label = $\"Control/RPM\"
+@onready var speed_label = $\"Control/SPEED\"
+@onready var gear_label = $\"Control/GEAR\"
+@onready var engine_sound = $\"Control/engine sound\"
+
+@onready var camera = $SpringArm3D/Camera3D
+var camera_yaw := 0.0 
+var camera_lag := 10.0 
+
+
+
+func _physics_process(delta: float) -> void:
+	var speed = linear_velocity.length() * speed_multiplyer
+	if speed <= 50:
+		speed_multiplyer = 3.8
+		power = 170 	#gear 1 
+		
+	elif speed >= 55 and speed < 85:
+		speed_multiplyer = 4.3
+		power = 240    #gear 2
+		
+	elif speed >= 85 and speed < 110:
+		if current_gear == 3: #gear 3 
+			speed_multiplyer = 5.2
+			power = 380 
+
+	elif speed >= 110 and speed < 135:
+		if current_gear == 4: #gear 4
+			speed_multiplyer = 5.4
+			power = 470
+	
+	elif speed >= 135:
+		if current_gear == 5: #gear 5 
+			speed_multiplyer = 6.2
+			power = 500
+				
+		
+
+	var throttle := Input.is_action_pressed(\"forward\")
+	var brake_input := Input.is_action_pressed(\"back\")
+
+	shift_timer -= delta
+	if shift_timer <= 0.0:
+		if Input.is_action_just_pressed(\"shift_up\") and current_gear < gear_ratios.size() - 1:
+			current_gear += 1
+			shift_timer = shift_cooldown
+		elif Input.is_action_just_pressed(\"shift_down\") and current_gear > 0:
+			var predicted_rpm = linear_velocity.length() * gear_ratios[current_gear - 1] * 250
+			if predicted_rpm < max_rpm:
+				current_gear -= 1
+				shift_timer = shift_cooldown
+
+	if throttle:
+		var gear_ratio = gear_ratios[current_gear]
+		var rpm_factor = clamp(1.0 - abs(rpm - 5000) / 4000.0, 0.3, 1.0)
+		var rpm_limit_factor = clamp((max_rpm - rpm) / 2000.0, 0.0, 1.0)
+		engine_force = power * gear_ratio * rpm_factor * rpm_limit_factor
+	else:
+		engine_force = 0
+
+	brake = brake_force if brake_input else 0
+
+	var target_steer = Input.get_axis(\"right\", \"left\") * deg_to_rad(steer_max_angles)
+	steering = move_toward(steering, target_steer, steer_speed * delta)
+
+	var wheel_speed = linear_velocity.length()
+	rpm = clamp(wheel_speed * gear_ratios[current_gear] * 300, 1000, max_rpm)
+
+
+	rpm_label.text = \"RPM: %d\" % int(rpm)
+	speed_label.text = \"Speed: %.1f km/h\" % speed
+	gear_label.text = \"Gear: %d\" % (current_gear + 1)
+
+	if current_gear != last_gear:
+		gear_shift_timer = gear_shift_cooldown
+		last_gear = current_gear
+
+	if engine_sound:
+		var rpm_clamped = clamp(rpm, 4000, 7000)
+		var volume_db = lerp(-30, -5, (rpm_clamped - 4000) / 3000.0)
+
+		var base_pitch = 0.5
+		var pitch_rpm_factor = clamp(rpm / max_rpm, 0, 1)
+		target_pitch = base_pitch + pitch_rpm_factor * 1.0
+
+		if gear_shift_timer > 0:
+			target_pitch *= 0.7
+			volume_db -= 10
+
+		current_pitch = move_toward(current_pitch, target_pitch, delta * 2.5)
+		engine_sound.pitch_scale = current_pitch
+		engine_sound.volume_db = volume_db
+
+		if not engine_sound.playing:
+			engine_sound.play()
+
+		gear_shift_timer = max(gear_shift_timer - delta, 0.0)
+		
+		
+		
+		
+		
+	#***************
+	#CAMERA LAG 
+	#***************
+	var steer_offset = steering * 0.1  
+	camera_yaw = lerp(camera_yaw, steer_offset, delta * camera_lag)
+	camera.rotation.y = camera_yaw
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4xowi"]
+size = Vector3(1.5, 0.5, 3)
+
+[sub_resource type="AudioStreamMP3" id="AudioStreamMP3_m2ke0"]
+data = PackedByteArray("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")
+
+[node name="car" type="VehicleBody3D"]
+script = SubResource("GDScript_a202f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00557923, -0.00345862, -0.0907311)
+shape = SubResource("BoxShape3D_4xowi")
+
+[node name="rear_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.711849, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+wheel_rest_length = 0.2
+wheel_friction_slip = 2.2
+suspension_travel = 0.15
+suspension_stiffness = 80.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="rear_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793782, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+wheel_rest_length = 0.2
+wheel_friction_slip = 2.2
+suspension_travel = 0.15
+suspension_stiffness = 80.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.711849, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+wheel_friction_slip = 5.0
+suspension_stiffness = 120.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793782, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+wheel_friction_slip = 5.0
+suspension_stiffness = 120.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_m2ke0")]
+transform = Transform3D(0.345, 0, 0, 0, 0.345, 0, 0, 0, 0.345, 0.0550495, -0.285167, -0.135886)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SPEED" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1025.0
+offset_top = 519.0
+offset_right = 1086.0
+offset_bottom = 594.0
+text = "SPEED:"
+
+[node name="RPM" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 554.0
+offset_right = 1088.0
+offset_bottom = 629.0
+text = "RPM:     "
+
+[node name="GEAR" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 591.0
+offset_right = 1088.0
+offset_bottom = 666.0
+text = "Gear:"
+
+[node name="engine sound" type="AudioStreamPlayer3D" parent="Control"]
+stream = SubResource("AudioStreamMP3_m2ke0")
+attenuation_model = 3
+volume_db = 14.116
+max_db = 6.0
+panning_strength = 0.0
+parameters/looping = true
+
+[node name="SpringArm3D" type="SpringArm3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1.20776, -4.16627)
+
+[node name="Camera3D" type="Camera3D" parent="SpringArm3D"]

@@ -1,0 +1,181 @@
+[gd_scene load_steps=5 format=3 uid="uid://bqlmps3hw1ngw"]
+
+[ext_resource type="PackedScene" uid="uid://w63j5fbexquw" path="res://scene.gltf" id="1_m2ke0"]
+[ext_resource type="AudioStream" uid="uid://dth5xgq1vysli" path="res://small.mp3" id="2_bpaqe"]
+
+[sub_resource type="GDScript" id="GDScript_a202f"]
+script/source = "extends VehicleBody3D
+
+var power := 50
+var brake_force := 5.0
+var steer_max_angles := 50
+var steer_speed := 5
+
+var gear_ratios := [2.5, 1.7, 1.3, 1.0, 0.9]
+var max_rpm := 7000
+
+var current_gear := 0
+var rpm := 0.0
+var speed_multiplyer = 3.6
+var shift_cooldown := 0.25  # seconds between shifts
+var shift_timer := 0.0
+
+@onready var rpm_label = $\"Control/RPM\"
+@onready var speed_label = $\"Control/SPEED\"
+@onready var gear_label = $\"Control/GEAR\"
+@onready var engine_sound = $\"Control/engine sound\"
+
+func _physics_process(delta: float) -> void:
+	var speed = linear_velocity.length() * speed_multiplyer
+	if speed <= 40:
+		speed_multiplyer = 3.6 
+	elif speed >= 41:
+		speed_multiplyer = 4.7 
+	
+	var throttle := Input.is_action_pressed(\"forward\") 
+	var brake_input := Input.is_action_pressed(\"back\")
+
+# Manual gear shifting input with downshift protection
+	shift_timer -= delta
+	if shift_timer <= 0.0:
+		if Input.is_action_just_pressed(\"shift_up\") and current_gear < gear_ratios.size() - 1:
+			current_gear += 1
+			shift_timer = shift_cooldown
+		elif Input.is_action_just_pressed(\"shift_down\") and current_gear > 0:
+			# Prevent downshift if it would over-rev the engine
+			var predicted_rpm = linear_velocity.length() * gear_ratios[current_gear - 1] * 250
+			if predicted_rpm < max_rpm:
+				current_gear -= 1
+				shift_timer = shift_cooldown
+
+
+	if throttle:
+		var gear_ratio = gear_ratios[current_gear]
+
+		if rpm < max_rpm:
+			# Power curve: peaks at 5500 RPM, drops to 50% at extremes
+			var rpm_factor = clamp(1.0 - abs(rpm - 5500) / 5000.0, 0.5, 1.0)
+			engine_force = power * gear_ratio * rpm_factor
+		else:
+			# RPM too high — engine cuts out
+			engine_force = 0
+	else:
+		engine_force = 0
+
+
+	# Braking
+	brake = brake_force if brake_input else 0
+
+	# Steering
+	var target_steer = Input.get_axis(\"right\", \"left\") * deg_to_rad(steer_max_angles)
+	steering = move_toward(steering, target_steer, steer_speed * delta)
+
+	# RPM estimation (faster RPM)
+	var wheel_speed = linear_velocity.length()
+	rpm = clamp(wheel_speed * gear_ratios[current_gear] * 250, 1000, max_rpm)
+
+	# Update UI labels
+	if rpm_label:
+		rpm_label.text = \"RPM: %d\" % int(rpm)
+	if speed_label:
+		speed_label.text = \"Speed: %.1f km/h\" % speed
+	if gear_label:
+		gear_label.text = \"Gear: %d\" % (current_gear + 1)
+		
+			
+	if engine_sound:
+		# Volume: 0 (silent) at 4000 RPM, ramp to 0 dB at 7000 RPM
+		var rpm_clamped = clamp(rpm, 4000, 7000)
+		var volume_db = lerp(-80, 0, (rpm_clamped - 4000) / 3000.0)
+		engine_sound.volume_db = volume_db
+
+		# Pitch: increase with gear and rpm (base 1.0 to max ~2.0)
+		var base_pitch = 1.0
+		var gear_factor = float(current_gear) / max(1, gear_ratios.size() - 1)  # 0 to 1 range
+		var pitch_rpm_factor = clamp(rpm / max_rpm, 0, 1)
+		engine_sound.pitch_scale = base_pitch + gear_factor * 0.5 + pitch_rpm_factor * 0.5
+
+		# Play sound if not playing
+		if not engine_sound.playing:
+			engine_sound.play()
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4xowi"]
+size = Vector3(1.5, 0.5, 3)
+
+[node name="car" type="VehicleBody3D"]
+script = SubResource("GDScript_a202f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00557923, -0.00345862, -0.0907311)
+shape = SubResource("BoxShape3D_4xowi")
+
+[node name="rear_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.711849, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.711849, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="rear_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793782, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.793782, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="Sketchfab_Scene" parent="." instance=ExtResource("1_m2ke0")]
+transform = Transform3D(0.345, 0, 0, 0, 0.345, 0, 0, 0, 0.345, 0.0550495, -0.285167, -0.135886)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SPEED" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1025.0
+offset_top = 519.0
+offset_right = 1086.0
+offset_bottom = 594.0
+text = "SPEED:"
+
+[node name="RPM" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 554.0
+offset_right = 1088.0
+offset_bottom = 629.0
+text = "RPM:     "
+
+[node name="GEAR" type="Label" parent="Control"]
+layout_mode = 0
+offset_left = 1027.0
+offset_top = 591.0
+offset_right = 1088.0
+offset_bottom = 666.0
+text = "Gear:"
+
+[node name="engine sound" type="AudioStreamPlayer3D" parent="Control"]
+stream = ExtResource("2_bpaqe")
+volume_db = 14.116
+max_db = 6.0

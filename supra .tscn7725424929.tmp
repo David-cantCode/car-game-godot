@@ -1,0 +1,71 @@
+[gd_scene load_steps=4 format=3 uid="uid://bqlmps3hw1ngw"]
+
+[sub_resource type="GDScript" id="GDScript_a202f"]
+script/source = "@onready var front_left_wheel = $front_left
+@onready var front_right_wheel = $front_right
+@onready var rear_left_wheel = $rear_left
+@onready var rear_right_wheel = $rear_right
+
+func _physics_process(delta: float) -> void:
+	var steer_input = Input.get_axis(\"left\", \"right\")
+	var engine_input = Input.get_axis(\"back\", \"forward\")
+
+	var engine_force = engine_input * 1000.0
+	var steering_angle = steer_input * 0.5  # adjust as needed
+
+	# Apply engine force to rear wheels
+	rear_left_wheel.engine_force = engine_force
+	rear_right_wheel.engine_force = engine_force
+
+	# Apply steering to front wheels
+	front_left_wheel.steering = steering_angle
+	front_right_wheel.steering = steering_angle
+"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_4xowi"]
+size = Vector3(1.5, 0.5, 3)
+
+[sub_resource type="BoxMesh" id="BoxMesh_sb1rl"]
+
+[node name="car" type="VehicleBody3D"]
+script = SubResource("GDScript_a202f")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00557923, -0.00345862, -0.0907311)
+shape = SubResource("BoxShape3D_4xowi")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1.5, 0, 0, 0, 0.5, 0, 0, 0, 3, 0, 0, 0)
+mesh = SubResource("BoxMesh_sb1rl")
+
+[node name="rear_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.836264, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="rear_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.914294, 0, -1.33245)
+use_as_traction = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_right" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.836264, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
+
+[node name="front_left" type="VehicleWheel3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.914294, 0, 1.21232)
+use_as_steering = true
+wheel_radius = 0.4
+suspension_stiffness = 50.0
+damping_compression = 1.9
+damping_relaxation = 2.0
