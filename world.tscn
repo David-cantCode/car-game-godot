@@ -1,11 +1,11 @@
 [gd_scene load_steps=9 format=3 uid="uid://but6fn2lmaf2y"]
 
-[ext_resource type="PackedScene" uid="uid://bqlmps3hw1ngw" path="res://supra .tscn" id="1_7b0r8"]
-[ext_resource type="Texture2D" uid="uid://b5x0inqoh31t4" path="res://icon.svg" id="2_rsu5x"]
-[ext_resource type="PackedScene" uid="uid://cvkhs0l6sf0rp" path="res://WEEEE/NASCAR.fbx" id="3_0ikdf"]
+[ext_resource type="Texture2D" uid="uid://b5x0inqoh31t4" path="res://icon.svg" id="1_tlwt5"]
+[ext_resource type="PackedScene" uid="uid://bqlmps3hw1ngw" path="res://supra .tscn" id="2_aqk2v"]
+[ext_resource type="PackedScene" uid="uid://cvkhs0l6sf0rp" path="res://WEEEE/NASCAR.fbx" id="3_036b0"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ikdf"]
-albedo_texture = ExtResource("2_rsu5x")
+albedo_texture = ExtResource("1_tlwt5")
 uv1_scale = Vector3(25.94, 25.94, 25.94)
 uv1_offset = Vector3(0.415, 0, 0)
 uv1_triplanar = true
@@ -43,7 +43,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0.000427246)
 visible = false
 shape = SubResource("BoxShape3D_qo1xj")
 
-[node name="car" parent="." instance=ExtResource("1_7b0r8")]
+[node name="car" parent="." instance=ExtResource("2_aqk2v")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -34.4024, -2.56625, -420.953)
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -52,5 +52,5 @@ environment = SubResource("Environment_0ikdf")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
 transform = Transform3D(1, 0, 0, 0, 0.431456, 0.902134, 0, -0.902134, 0.431456, 0, 10.4147, 0)
 
-[node name="NASCAR" parent="." instance=ExtResource("3_0ikdf")]
+[node name="NASCAR" parent="." instance=ExtResource("3_036b0")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 2.07073, -0.313922, -415.425)

@@ -1,0 +1,280 @@
+[gd_scene load_steps=8 format=3 uid="uid://fxnmaib5aab3"]
+
+[ext_resource type="PackedScene" uid="uid://bqlmps3hw1ngw" path="res://supra .tscn" id="1_d1bwg"]
+[ext_resource type="Texture2D" uid="uid://boqn3xmb30qy5" path="res://sprites/road.png" id="2_kbytp"]
+[ext_resource type="Texture2D" uid="uid://lrn8f5r201lp" path="res://sprites/road empty.png" id="3_glwix"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kbytp"]
+size = Vector3(18.5626, 0.479237, 148.11)
+
+[sub_resource type="PhysicalSkyMaterial" id="PhysicalSkyMaterial_kbytp"]
+ground_color = Color(0.101961, 0.466667, 0.882353, 1)
+
+[sub_resource type="Sky" id="Sky_glwix"]
+sky_material = SubResource("PhysicalSkyMaterial_kbytp")
+
+[sub_resource type="Environment" id="Environment_p8roh"]
+background_mode = 2
+sky = SubResource("Sky_glwix")
+
+[node name="World2" type="Node3D"]
+
+[node name="car" parent="." instance=ExtResource("1_d1bwg")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0257305, 1.67427, 0.386569)
+
+[node name="roads" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0257305, 1.67427, 0.386569)
+
+[node name="road seg" type="Node3D" parent="roads"]
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+shaded = true
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+shaded = true
+texture_filter = 0
+texture = ExtResource("3_glwix")
+
+[node name="road seg2" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.01973)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg2"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg2"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg2"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg3" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -18.5048)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg3"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg3"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg3"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg4" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -9.48511)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg4"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg4"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg4"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg5" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -36.8394)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg5"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg5"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg5"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg6" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -27.8196)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg6"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg6"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg6"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg7" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -55.3442)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg7"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg7"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg7"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg8" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -46.3245)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg8"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg8"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg8"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg9" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 73.248)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg9"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg9"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg9"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg10" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 82.2677)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg10"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg10"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg10"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg11" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 54.7431)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg11"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg11"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg11"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg12" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 63.7629)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg12"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg12"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg12"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg13" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 36.4086)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg13"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg13"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg13"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg14" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 45.4283)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg14"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg14"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg14"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg15" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 17.9038)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg15"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg15"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg15"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="road seg16" type="Node3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 26.9235)
+
+[node name="Sprite3D2" type="Sprite3D" parent="roads/road seg16"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 1.2547, -1.6408, -0.523562)
+texture = ExtResource("2_kbytp")
+
+[node name="Sprite3D3" type="Sprite3D" parent="roads/road seg16"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, 7.24546, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="Sprite3D4" type="Sprite3D" parent="roads/road seg16"]
+transform = Transform3D(6.06796, 0, 0, 0, -4.20981e-07, -0.999999, 0, 9.63092, -4.37114e-08, -4.74894, -1.6408, -0.523562)
+texture = ExtResource("3_glwix")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="roads"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.64487, -1.71859, 13.0582)
+shape = SubResource("BoxShape3D_kbytp")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_p8roh")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="WorldEnvironment"]
+transform = Transform3D(1, 0, 0, 0, 0.615606, 0.788054, 0, -0.788054, 0.615606, 0, 6.57792, 0)
